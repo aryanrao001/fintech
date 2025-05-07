@@ -6,17 +6,19 @@ import Dashboard from './pages/Dashboard';
 import AllUser from './pages/AllUser';
 import SignIn from './pages/SignIn';
 import { ToastContainer,  } from 'react-toastify';
+import SignUp from './pages/SignUp';
 
 
 const AppLayout = () => {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
     <div className="text-4xl">
-      {isLoginPage ? (
+      {isAuthPage ? (
         <Routes>
           <Route path="/login" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       ) : (
         <Sidebar>

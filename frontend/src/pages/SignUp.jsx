@@ -1,16 +1,18 @@
 import { Eye, EyeClosed, } from 'lucide-react';
 import React, { useContext, useState } from 'react';
-import { Link,  } from 'react-router';
+import { Link, Links,  } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
 import { AppContext } from '../context/AllContext';
 import axios from "axios"
 import { toast } from 'react-toastify';
 
-export default function SignIn() {
+export default function SignUp() {
     const [pass, setPass] = useState(false);
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [phone, setPhone] = useState("");
 
     const navigate = useNavigate();
 
@@ -21,18 +23,20 @@ export default function SignIn() {
       e.preventDefault();
 
       const formdata = new FormData();
+      formdata.append("name", name);
       formdata.append("email", email);
+      formdata.append("phone", phone);
       formdata.append("password", password);
 
+
       try {
-        const response = await axios.post(backendUrl+'/users/login',formdata, {
+        const response = await axios.post(backendUrl+'/users',formdata, {
           headers:{
             'Content-Type': 'application/json',//
           }
         });
         if(response.data.success){
           toast.success(response.data.message);
-          setRole(response.data.user.role);
           navigate('/');
         }
         console.log(response.data);
@@ -43,39 +47,38 @@ export default function SignIn() {
     }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen ">
       {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-8">
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-8 py-4">
         <div className="w-full max-w-md">
           <Link to='/' ><span className="text-sm text-gray-500 mb-8 inline-block">&lt; Back to dashboard</span></Link>
 
-          <h2 className="text-xl font-bold mb-2 text-gray-900">Sign In </h2>
-          <p className="text-gray-500 text-xl mb-6">Enter your email and password to sign in!</p>
+          <h2 className="text-xl font-bold mb-2 text-gray-900">Sign UP </h2>
+          <p className="text-gray-500 text-xl mb-6">Enter your details to sign Up</p>
 
-          <div className="flex gap-4 mb-6">
+          {/* <div className="flex gap-4 mb-6">
             <button className="flex-1 py-2 px-4 border rounded-lg flex items-center justify-center text-sm font-medium text-gray-700 border-gray-300 hover:bg-gray-100">
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
               Sign in with Google
             </button>
             <button className="flex-1 py-2 px-4 border rounded-lg flex items-center justify-center text-sm font-medium text-gray-700 border-gray-300 hover:bg-gray-100">
-              {/* <img src="https://www.svgrepo.com/show/475647/x-logo.svg" alt="X" className="w-5 h-5 mr-2" /> */}
               <img src="https://www.svgrepo.com/show/303127/twitter-logo.svg" alt="X" className="w-5 h-5 mr-2" />
 
               Sign in with X
             </button>
-          </div>
+          </div> */}
 
-          <div className="text-center text-xl mb-6 text-gray-400">Or</div>
+          {/* <div className="text-center text-xl mb-6 text-gray-400">Or</div> */}
 
           <form className="space-y-4" onSubmit={handleSubmit} >
             <div>
-                <label className="block text-sm font-medium text-gray-700">Email<span className="text-red-500">*</span></label>
-                <inputrmdir
+                <label className="block text-sm font-medium text-gray-700">Name<span className="text-red-500">*</span></label>
+                <input
 
                 type="text" 
-                placeholder="info@gmail.com" 
-                onChange={(e)=>(setEmail(e.target.value))}
-                value={email}
+                placeholder="Enter Your Name..." 
+                onChange={(e)=>(setName(e.target.value))}
+                value={name}
                 className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
@@ -88,12 +91,12 @@ export default function SignIn() {
               className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email<span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-gray-700">phone<span className="text-red-500">*</span></label>
               <input
-              type="email" 
-              placeholder="info@gmail.com" 
-              onChange={(e)=>(setEmail(e.target.value))}
-              value={email}
+              type="text" 
+              placeholder="Enter Your Phone...." 
+              onChange={(e)=>(setPhone(e.target.value))}
+              value={phone}
               className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
@@ -123,7 +126,7 @@ export default function SignIn() {
           </form>
 
           <p className="text-sm text-center text-gray-600 mt-6">
-            Don't have an account? <a href="#" className="text-blue-600 hover:underline">Sign Up</a>
+            Don't have an account?<Link to='/login' > <span href="#" className="text-blue-600 hover:underline">Sign In</span> </Link>
           </p>
         </div>
       </div>

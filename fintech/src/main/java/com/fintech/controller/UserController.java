@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,12 +20,32 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Register a new user
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody User user) {
+        // Set default role if it's null or empty
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("admin");
+        }
+
         userService.createUser(user);
-        return ResponseEntity.ok("User registered successfully");
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "User Registered Successfully");
+
+        return ResponseEntity.ok(response);
     }
+
+    // Register a new user
+    // @PostMapping
+    // public ResponseEntity<Map<String, Object>> createUser(@RequestBody User user) {
+    //     userService.createUser(user);
+    //     Map<String , Object> response = new HashMap<>();
+    //     response.put("success", true);
+    //     response.put("message", "User Registered Successfully");
+    //     return ResponseEntity.ok(response);
+    // }
+
 
     // Login user
     @PostMapping("/login")
